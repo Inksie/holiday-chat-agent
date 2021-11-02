@@ -24,3 +24,4 @@ yarn-error.log*
 
 /functions/firebaseKey.json
 /functions/node_modules
+/src/unsplashKey.json
