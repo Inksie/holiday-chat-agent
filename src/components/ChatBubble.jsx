@@ -1,3 +1,5 @@
+import "./ChatBubble.css";
+
 function ChatBubble(props) {
   return (
     <div className={`bubble ${props.message.sender}`}>

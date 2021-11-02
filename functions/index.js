@@ -7,7 +7,7 @@ const serviceAccount = require("./firebaseKey.json"); // contains the private AP
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL:
-    "https://holiday-chat-agent-default-rtdb.europe-west1.firebasedatabase.app/",
+    "https://holiday-chat-agent-c1c27-default-rtdb.europe-west1.firebasedatabase.app/",
 });
 
 // Connecting to the Dialogflow API - allows front end to communicate with Dialogflow on the back end.
@@ -26,7 +26,10 @@ exports.dialogflowGateway = functions
       const sessionClient = new SessionsClient({ credentials: serviceAccount });
 
       // referencing the session with firebase project ID and session ID
-      const session = sessionClient.sessionPath("firebasics-74f2a", sessionId);
+      const session = sessionClient.sessionPath(
+        "holiday-chat-agent-c1c27",
+        sessionId
+      );
 
       // getting response from the chat agent by calling detectIntent - provides an array of responses
       const responses = await sessionClient.detectIntent({
@@ -45,8 +48,9 @@ exports.dialogflowGateway = functions
 // HTTP cloud function
 const { WebhookClient } = require("dialogflow-fulfillment");
 
-exports.dialogflowWebhook = functions.https.onRequest(
-  async (request, response) => {
+exports.dialogflowWebhook = functions
+  .region("europe-west1")
+  .https.onRequest(async (request, response) => {
     const agent = new WebhookClient({ request, response });
 
     const result = request.body.queryResult;
@@ -57,17 +61,16 @@ exports.dialogflowWebhook = functions.https.onRequest(
       const db = admin.firestore();
       const profile = db.collection("conversations").doc(sessionId);
 
-      const { location, climate, continent, activityLevel } =
+      const { location, climate, continent, activitylevel } =
         result.outputContexts[0].parameters;
 
-      await profile.set({ location, climate, continent, activityLevel });
+      await profile.set({ location, climate, continent, activitylevel });
     }
 
     let intentMap = new Map();
     intentMap.set("HolidayFinderYes", holidaySettingHandler);
     agent.handleRequest(intentMap);
-  }
-);
+  });
 
 exports.getHolidayResponse = functions
   .region("europe-west1")
@@ -80,10 +83,14 @@ exports.getHolidayResponse = functions
         .where("climate", "==", request.body.climate)
         .where("location", "==", request.body.location)
         .where("continent", "==", request.body.continent)
-        .where("activityLevel", "==", request.body.activityLevel)
+        .where("activity-level", "==", request.body.activitylevel)
         .get()
         .then((querySnapshot) => {
           console.log(JSON.stringify(querySnapshot));
+          querySnapshot.forEach((destination) => {
+            destinations.push(destination.data());
+          });
+          response.send(destinations);
         });
     });
   });
