@@ -30,6 +30,11 @@
   padding: 20px;
   flex: 0;
 }
+
+input:focus::placeholder {
+  color: transparent;
+}
+
 button {
   border-radius: 10px;
   height: 35px;

@@ -2,6 +2,7 @@ import "./ChatBox.css";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ChatBubble from "./ChatBubble";
+import HolidayMatchBubble from "./HolidayMatchBubble";
 
 function ChatBox() {
   const [messages, setMessages] = useState([]);
@@ -10,9 +11,11 @@ function ChatBox() {
   const [agentTyping, setAgentTyping] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
 
-  useEffect(() => {
+  function resetChat() {
     // setting a new unique session ID when app is rendered
     setSessionId(uuidv4());
+
+    setRecommendations([]);
 
     // initial messages from agent
     setMessages([
@@ -25,6 +28,10 @@ function ChatBox() {
         text: "First things first, what type of holiday are you looking for? A trip to the mountains, a city break, or an escape to the beach?",
       },
     ]);
+  }
+
+  useEffect(() => {
+    resetChat();
   }, []);
 
   function handleMessageInput(e) {
@@ -129,6 +136,9 @@ function ChatBox() {
           {agentTyping && (
             <ChatBubble message={{ sender: "agent", text: "..." }} />
           )}
+          {recommendations.length > 0 && (
+            <HolidayMatchBubble recommendations={recommendations} />
+          )}
         </div>
         <div className="input">
           <input
@@ -136,8 +146,9 @@ function ChatBox() {
             value={currentMessage}
             onChange={handleMessageInput}
             onKeyPress={keyPressHandler}
+            placeholder="Start your conversation with the agent here..."
           />
-          <button onClick={handleSendMessage}>OK</button>
+          <button onClick={handleSendMessage}>Send</button>
         </div>
       </div>
     </div>
