@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ChatBubble from "./ChatBubble";
 import HolidayMatchBubble from "./HolidayMatchBubble";
+import MatchedHolidayCount from "./MatchedHolidayCount";
 
 function ChatBox() {
   const [messages, setMessages] = useState([]);
@@ -21,11 +22,15 @@ function ChatBox() {
     setMessages([
       {
         sender: "agent",
-        text: "Hi! I'm here to recommend you a holiday. I'll have to ask you a series of questions in order to tailor pick your next destination.",
+        text: "Hi, I'm HoliBot! First Holiday's assistant.",
       },
       {
         sender: "agent",
-        text: "First things first, what type of holiday are you looking for? A trip to the mountains, a city break, or an escape to the beach?",
+        text: "I'm here to recommend you a holiday. I'll have to ask you a series of questions in order to tailor pick your next destination.",
+      },
+      {
+        sender: "agent",
+        text: "First things first, what type of holiday are you looking for? Examples could be a trip to the mountains, a city break, or an escape to the beach?",
       },
     ]);
   }
@@ -136,19 +141,27 @@ function ChatBox() {
           {agentTyping && (
             <ChatBubble message={{ sender: "agent", text: "..." }} />
           )}
-          {recommendations.length > 0 && (
-            <HolidayMatchBubble recommendations={recommendations} />
-          )}
+          <MatchedHolidayCount length={recommendations.length} />
+
+          {recommendations.map((recommendation) => {
+            return <HolidayMatchBubble recommendation={recommendation} />;
+          })}
         </div>
         <div className="input">
-          <input
-            type="text"
-            value={currentMessage}
-            onChange={handleMessageInput}
-            onKeyPress={keyPressHandler}
-            placeholder="Start your conversation with the agent here..."
-          />
-          <button onClick={handleSendMessage}>Send</button>
+          {recommendations.length > 0 ? (
+            <button onClick={resetChat}>Want to start again?</button>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={currentMessage}
+                onChange={handleMessageInput}
+                onKeyPress={keyPressHandler}
+                placeholder=" Start your conversation with the agent here..."
+              />
+              <button onClick={handleSendMessage}>Send</button>
+            </>
+          )}
         </div>
       </div>
     </div>

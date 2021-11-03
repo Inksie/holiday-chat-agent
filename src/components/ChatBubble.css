@@ -33,13 +33,13 @@
 }
 
 .user {
-  background-color: peachpuff;
+  background-color: #f39e91;
   float: right;
   animation: pan-user 0.4s;
 }
 
 .agent {
-  background-color: lightskyblue;
+  background-color: #ffb83c;
   float: left;
   animation: pan-agent 0.4s;
 }
