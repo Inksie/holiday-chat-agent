@@ -13,23 +13,33 @@ function HolidayMatchBubble(props) {
     setModal(false);
   }
 
+  const holiday = props.recommendation;
+
   return (
     <>
       <div className="city-wrapper">
         <div
           onClick={modalHandler}
           className="city-background"
-          style={{ backgroundImage: `url(${props.recommendation.img})` }}
+          style={{ backgroundImage: `url(${holiday.img})` }}
         ></div>
         <div className="city-content">
           <span className="city">
-            {props.recommendation.city}, {props.recommendation.country}!
+            {holiday.city}, {holiday.country}!
           </span>
         </div>
       </div>
 
       {modal && (
-        <Modal close={modalClose} img={props.recommendation["random-image"]} />
+        <Modal
+          close={modalClose}
+          img={holiday.img}
+          desc={holiday.description}
+          city={holiday.city}
+          hotel={holiday["hotel-name"]}
+          rating={holiday.rating}
+          price={holiday["price-per-night"]}
+        />
       )}
     </>
   );

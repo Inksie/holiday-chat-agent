@@ -116,7 +116,6 @@ function ChatBox() {
             .then((response) => {
               setRecommendations(response);
             });
-          console.log(`recommendations: ${JSON.stringify(recommendations)}`);
         }
       });
     // Setting the message field back to empty when submitting
@@ -141,6 +140,7 @@ function ChatBox() {
           {agentTyping && (
             <ChatBubble message={{ sender: "agent", text: "..." }} />
           )}
+
           <MatchedHolidayCount length={recommendations.length} />
 
           {recommendations.map((recommendation) => {
