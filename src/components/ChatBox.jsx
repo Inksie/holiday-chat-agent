@@ -11,12 +11,14 @@ function ChatBox() {
   const [sessionId, setSessionId] = useState();
   const [agentTyping, setAgentTyping] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
+  const [endConversation, setEndConversation] = useState(false);
 
   function resetChat() {
     // setting a new unique session ID when app is rendered
     setSessionId(uuidv4());
 
     setRecommendations([]);
+    setEndConversation(false);
 
     // initial messages from agent
     setMessages([
@@ -115,6 +117,7 @@ function ChatBox() {
             })
             .then((response) => {
               setRecommendations(response);
+              setEndConversation(true);
             });
         }
       });
@@ -130,6 +133,14 @@ function ChatBox() {
     }
   }
 
+  const typing = { sender: "agent", text: "..." };
+  const noMatchMessage = {
+    sender: "agent",
+    text: "Sorry, I wasn't able to match you with one of our holiday packages. Please click the button below to try again.",
+  };
+
+  const noMatch = endConversation && recommendations.length === 0;
+
   return (
     <div className="chatbox-container">
       <div className="chatbox">
@@ -137,18 +148,17 @@ function ChatBox() {
           {messages.map((message) => (
             <ChatBubble message={message} />
           ))}
-          {agentTyping && (
-            <ChatBubble message={{ sender: "agent", text: "..." }} />
-          )}
+          {agentTyping && <ChatBubble message={typing} />}
 
           <MatchedHolidayCount length={recommendations.length} />
+          {noMatch && <ChatBubble message={noMatchMessage} />}
 
           {recommendations.map((recommendation) => {
             return <HolidayMatchBubble recommendation={recommendation} />;
           })}
         </div>
         <div className="input">
-          {recommendations.length > 0 ? (
+          {endConversation ? (
             <button onClick={resetChat}>Want to start again?</button>
           ) : (
             <>
