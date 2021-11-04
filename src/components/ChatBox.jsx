@@ -16,7 +16,9 @@ function ChatBox() {
   const elementRef = useRef(null);
 
   useEffect(() => {
-    elementRef.current.scrollIntoView();
+    setTimeout(() => {
+      elementRef.current.scrollIntoView();
+    }, 400);
   }, [messages, recommendations]);
 
   function resetChat() {
