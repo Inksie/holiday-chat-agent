@@ -1,5 +1,5 @@
 import "./ChatBox.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ChatBubble from "./ChatBubble";
 import HolidayMatchBubble from "./HolidayMatchBubble";
@@ -12,6 +12,12 @@ function ChatBox() {
   const [agentTyping, setAgentTyping] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
   const [endConversation, setEndConversation] = useState(false);
+
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    elementRef.current.scrollIntoView();
+  }, [messages, recommendations]);
 
   function resetChat() {
     // setting a new unique session ID when app is rendered
@@ -156,6 +162,7 @@ function ChatBox() {
           {recommendations.map((recommendation) => {
             return <HolidayMatchBubble recommendation={recommendation} />;
           })}
+          <div className="bubble" ref={elementRef}></div>
         </div>
         <div className="input">
           {endConversation ? (
