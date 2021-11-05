@@ -91,7 +91,6 @@ function ChatBox() {
         return response.json();
       })
       .then((response) => {
-        console.log(response);
         setAgentTyping(false);
         setMessages((prevState) => {
           const newState = [...prevState];

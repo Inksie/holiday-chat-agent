@@ -8,6 +8,12 @@ afterEach(() => {
 
 let props = { sender: "agent", text: "I'm an agent" };
 
+test("Should render ChatBubble component", () => {
+  render(<ChatBubble message={props} />);
+  const chatBubble = screen.getByTestId("chatbubble-test");
+  expect(chatBubble).toBeInTheDocument();
+});
+
 test("Should show 'agent' as className", () => {
   render(<ChatBubble message={props} />);
   const chatBubble = screen.getByTestId("chatbubble-test");

@@ -19,6 +19,7 @@
   background-color: white;
   animation: modal-fade 0.3s;
   position: relative;
+  overflow-y: scroll;
 }
 
 .desc {

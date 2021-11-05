@@ -2,7 +2,9 @@ import "./Modal.css";
 import { AiFillStar } from "react-icons/ai";
 
 function Modal(props) {
-  const desc = props.holiday.desc.map((description) => <p>{description}</p>);
+  const desc = props.holiday.description.map((description) => (
+    <p>{description}</p>
+  ));
 
   const rating = props.holiday.rating;
   let ratingStar = [];
@@ -13,7 +15,7 @@ function Modal(props) {
   }
 
   return (
-    <div className="modal-container">
+    <div className="modal-container" data-testid="modal-test">
       <div className="modal">
         <div className="img-container">
           <img
@@ -30,12 +32,12 @@ function Modal(props) {
             First Holiday has got you covered.
           </h2>
           <p>
-            <b>Hotel:</b> {props.holiday.hotel}
+            <b>Hotel:</b> {props.holiday["hotel-name"]}
             <br />
             <b>Star rating:</b> {ratingStar}
             <br />
             <b>Price per night with First Holiday's package deal:</b> £
-            {props.holiday.price}
+            {props.holiday["price-per-night"]}
           </p>
 
           <button onClick={props.close} className="btn">
