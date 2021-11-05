@@ -150,7 +150,7 @@ function ChatBox() {
   const noMatch = endConversation && recommendations.length === 0;
 
   return (
-    <div className="chatbox-container">
+    <div className="chatbox-container" data-testid="chatbox-test">
       <div className="chatbox">
         <div className="messages">
           {messages.map((message) => (

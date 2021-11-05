@@ -28,7 +28,11 @@ function App() {
   }, []);
 
   return (
-    <div className="App" style={{ backgroundImage: `url(${backgroundUrl})` }}>
+    <div
+      className="App"
+      style={{ backgroundImage: `url(${backgroundUrl})` }}
+      data-testid="app-test"
+    >
       <header className="App-header">
         <Logo img={logo} className="App-logo" />
         <Logo img={logotext} className="logo-text" />

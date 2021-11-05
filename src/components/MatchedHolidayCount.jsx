@@ -6,11 +6,13 @@ function MatchedHolidayCount(props) {
 
     const holidayLength =
       length > 1 ? (
-        <div className="match-bubble">
+        <div className="match-bubble" data-testid="holiday-length-test">
           I matched you with {length} holidays!
         </div>
       ) : (
-        <div className="match-bubble">I matched you with {length} holiday!</div>
+        <div className="match-bubble" data-testid="holiday-length-test">
+          I matched you with {length} holiday!
+        </div>
       );
     return holidayLength;
   }
